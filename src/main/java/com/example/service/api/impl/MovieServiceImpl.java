@@ -1,5 +1,6 @@
 package com.example.service.api.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -33,10 +34,32 @@ public class MovieServiceImpl implements IMovieService {
 	}
 
 	@Override
-	public Page<Movie> getAll(int page, int limit) {
-		Sort sort = new Sort(new Sort.Order(Sort.Direction.ASC, "id"));
+	public Page<Movie> getAll(int page, int size, String... sortAttributes) {
 
-		Pageable pageable = new PageRequest(page, limit, sort);
+		List<Sort.Order> sortOrderList = new ArrayList<>();
+
+		if (sortAttributes != null && sortAttributes.length > 0) {
+			for (String s : sortAttributes) {
+				if (s.contains(",")) {
+					String[] parts = s.split(",");
+					sortOrderList
+							.add(new Sort.Order(Sort.Direction.fromStringOrNull(parts[1].toUpperCase()), parts[0]));
+				} else {
+					sortOrderList.add(new Sort.Order(Sort.Direction.ASC, s));
+				}
+			}
+		}
+
+		// Sort sort = new Sort(new Sort.Order(Sort.Direction.ASC, "id"));
+
+		Pageable pageable = null;
+
+		if (sortOrderList.size() > 0) {
+			Sort sort = new Sort(sortOrderList);
+			pageable = new PageRequest(page, size, sort);
+		}else{
+			pageable = new PageRequest(page, size);
+		}
 
 		Page<Movie> pageResult = (Page<Movie>) this.movieRepository.findAll(pageable);
 
