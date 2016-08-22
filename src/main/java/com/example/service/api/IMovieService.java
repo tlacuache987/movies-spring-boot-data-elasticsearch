@@ -13,7 +13,7 @@ public interface IMovieService {
 
 	Movie addMovie(Movie movie);
 
-	Page<Movie> getAll();
+	Page<Movie> getAll(int page, int limit);
 
 	Movie create(Movie movie);
 

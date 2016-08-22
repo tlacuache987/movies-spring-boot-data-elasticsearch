@@ -32,14 +32,14 @@ public class MovieServiceImpl implements IMovieService {
 	}
 
 	@Override
-	public Page<Movie> getAll() {
+	public Page<Movie> getAll(int page, int limit) {
 
-		Pageable pageable = new PageRequest(0, 10, Sort.Direction.ASC, "id");
+		Pageable pageable = new PageRequest(page, limit, Sort.Direction.ASC, "id");
 
-		Page<Movie> page = (Page<Movie>) movieRepository.findAll(pageable);
+		Page<Movie> pageResult = (Page<Movie>) movieRepository.findAll(pageable);
 
 		// page.get
-		return page;
+		return pageResult;
 	}
 
 	@Override
