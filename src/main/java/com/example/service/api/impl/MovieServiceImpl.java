@@ -2,6 +2,7 @@ package com.example.service.api.impl;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,49 +21,57 @@ public class MovieServiceImpl implements IMovieService {
 	private IMovieRepository movieRepository;
 
 	public List<Movie> getByName(String name) {
-		return movieRepository.findByName(name);
+		return this.movieRepository.findByName(name);
 	}
 
 	public List<Movie> getByRatingInterval(Double beginning, Double end) {
-		return movieRepository.findByRatingBetween(beginning, end);
+		return this.movieRepository.findByRatingBetween(beginning, end);
 	}
 
 	public Movie addMovie(Movie movie) {
-		return movieRepository.save(movie);
+		return this.movieRepository.save(movie);
 	}
 
 	@Override
 	public Page<Movie> getAll(int page, int limit) {
+		Sort sort = new Sort(new Sort.Order(Sort.Direction.ASC, "id"));
 
-		Pageable pageable = new PageRequest(page, limit, Sort.Direction.ASC, "id");
+		Pageable pageable = new PageRequest(page, limit, sort);
 
-		Page<Movie> pageResult = (Page<Movie>) movieRepository.findAll(pageable);
+		Page<Movie> pageResult = (Page<Movie>) this.movieRepository.findAll(pageable);
 
-		// page.get
 		return pageResult;
 	}
 
 	@Override
 	public Movie create(Movie movie) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.movieRepository.save(movie);
 	}
 
 	@Override
 	public Movie getById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.movieRepository.findOne(id);
 	}
 
 	@Override
 	public Movie modify(Long id, Movie movie) {
-		// TODO Auto-generated method stub
-		return null;
+		Movie existingMovie = this.movieRepository.findOne(id);
+
+		Long existingId = existingMovie.getId();
+
+		BeanUtils.copyProperties(movie, existingMovie);
+
+		existingMovie.setId(existingId);
+
+		return this.movieRepository.save(existingMovie);
 	}
 
 	@Override
 	public Movie delete(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Movie movie = this.movieRepository.findOne(id);
+
+		movieRepository.delete(movie);
+
+		return movie;
 	}
 }

@@ -1,7 +1,10 @@
 package com.example.rest.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.model.Movie;
+import com.example.model.Movies;
+import com.example.rest.controller.utils.RestControllerUtils;
 import com.example.service.api.IMovieService;
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/api/movies")
 public class MoviesRestController {
 
 	@Value("${pageable.min-results}")
@@ -26,13 +31,18 @@ public class MoviesRestController {
 	private IMovieService moviesService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public Object getAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
-			@RequestParam(name = "limit", defaultValue = "0", required = false) int limit) {
+	public Movies getAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+			@RequestParam(name = "limit", defaultValue = "0", required = false) int limit,
+			HttpServletResponse response) {
 
 		page = page >= 0 ? page : page * -1;
-		limit = limit < minResults ? minResults : (limit > maxResults ? maxResults : limit);
+		limit = limit <= 0 ? minResults : (limit > maxResults ? maxResults : limit);
 
-		return moviesService.getAll(page, limit);
+		Page<Movie> moviePage = moviesService.getAll(page, limit);
+
+		RestControllerUtils.setHeaders.accept(response, moviePage);
+
+		return Movies.builder().movies(moviePage.getContent()).build();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
