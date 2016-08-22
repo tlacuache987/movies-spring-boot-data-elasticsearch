@@ -13,8 +13,6 @@ public interface IMovieService {
 
 	Movie addMovie(Movie movie);
 
-	Page<Movie> getAll(int page, int limit);
-
 	Movie create(Movie movie);
 
 	Movie getById(Long id);
@@ -22,6 +20,8 @@ public interface IMovieService {
 	Movie modify(Long id, Movie movie);
 
 	Movie delete(Long id);
+
+	Page<Movie> getAll(int page, int size, String ...sortAttributes);
 
 	// List<Movie> getAllWithWorkstationPosition();
 }

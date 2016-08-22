@@ -1,5 +1,7 @@
 package com.example.rest.controller;
 
+import java.util.Arrays;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +34,20 @@ public class MoviesRestController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public Movies getAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
-			@RequestParam(name = "limit", defaultValue = "0", required = false) int limit,
+			@RequestParam(name = "size", defaultValue = "0", required = false) int size,
+			@RequestParam(name = "sort", defaultValue = "", required = false) String[] sort,
 			HttpServletResponse response) {
 
 		page = page >= 0 ? page : page * -1;
-		limit = limit <= 0 ? minResults : (limit > maxResults ? maxResults : limit);
+		size = size <= 0 ? minResults : (size > maxResults ? maxResults : size);
+		sort = sort.length == 2 ? (sort[1].equalsIgnoreCase("asc") || sort[1].equalsIgnoreCase("desc")
+				? new String[] { String.join(",", sort) } : sort) : sort;
 
-		Page<Movie> moviePage = moviesService.getAll(page, limit);
+		Page<Movie> moviePage = moviesService.getAll(page, size, sort);
 
 		RestControllerUtils.setHeaders.accept(response, moviePage);
 
-		return Movies.builder().movies(moviePage.getContent()).build();
+		return Movies.builder().movies(moviePage.getContent()).moviesPage(null).build();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
