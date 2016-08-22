@@ -57,13 +57,11 @@ public class MoviesRestController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public Movie update(@PathVariable Long id, @RequestBody Movie movie) {
-
 		return moviesService.modify(id, movie);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public Movie delete(@PathVariable Long id) {
-
 		return moviesService.delete(id);
 	}
 }
