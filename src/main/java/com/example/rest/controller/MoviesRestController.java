@@ -1,7 +1,5 @@
 package com.example.rest.controller;
 
-import java.util.Arrays;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +45,7 @@ public class MoviesRestController {
 
 		RestControllerUtils.setHeaders.accept(response, moviePage);
 
-		return Movies.builder().movies(moviePage.getContent()).moviesPage(null).build();
+		return Movies.builder().movies(moviePage.getContent()).build();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -62,11 +60,52 @@ public class MoviesRestController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public Movie update(@PathVariable Long id, @RequestBody Movie movie) {
+
+		System.out.println("movie: " + movie);
 		return moviesService.modify(id, movie);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public Movie delete(@PathVariable Long id) {
 		return moviesService.delete(id);
+	}
+
+	@RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET)
+	public Movies getByName(@PathVariable String name,
+			@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+			@RequestParam(name = "size", defaultValue = "0", required = false) int size,
+			@RequestParam(name = "sort", defaultValue = "", required = false) String[] sort,
+			HttpServletResponse response) {
+
+		page = page >= 0 ? page : page * -1;
+		size = size <= 0 ? minResults : (size > maxResults ? maxResults : size);
+		sort = sort.length == 2 ? (sort[1].equalsIgnoreCase("asc") || sort[1].equalsIgnoreCase("desc")
+				? new String[] { String.join(",", sort) } : sort) : sort;
+
+		Page<Movie> moviePage = moviesService.getByName(name, page, size, sort);
+
+		RestControllerUtils.setHeaders.accept(response, moviePage);
+
+		return Movies.builder().movies(moviePage.getContent()).build();
+
+	}
+
+	@RequestMapping(value = "/searchByNameContaining/{name}", method = RequestMethod.GET)
+	public Movies getByNameLike(@PathVariable String name,
+			@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+			@RequestParam(name = "size", defaultValue = "0", required = false) int size,
+			@RequestParam(name = "sort", defaultValue = "", required = false) String[] sort,
+			HttpServletResponse response) {
+
+		page = page >= 0 ? page : page * -1;
+		size = size <= 0 ? minResults : (size > maxResults ? maxResults : size);
+		sort = sort.length == 2 ? (sort[1].equalsIgnoreCase("asc") || sort[1].equalsIgnoreCase("desc")
+				? new String[] { String.join(",", sort) } : sort) : sort;
+
+		Page<Movie> moviePage = moviesService.getByNameLike(name, page, size, sort);
+
+		RestControllerUtils.setHeaders.accept(response, moviePage);
+
+		return Movies.builder().movies(moviePage.getContent()).build();
 	}
 }

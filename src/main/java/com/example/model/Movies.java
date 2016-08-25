@@ -2,8 +2,6 @@ package com.example.model;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -19,5 +17,4 @@ import lombok.NoArgsConstructor;
 @JsonInclude(value = Include.NON_NULL)
 public class Movies {
 	private List<Movie> movies;
-	private Page<Movie> moviesPage;
 }
