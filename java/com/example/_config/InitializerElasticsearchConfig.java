@@ -28,7 +28,7 @@ public class InitializerElasticsearchConfig {
 		return (args) -> {
 			List<Movie> movies = MovieStub.createMovies();
 			Long id = 1L;
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 300; i++)
 				for (Movie m : movies) {
 					m.setId(id++);
 					movieService.create(m);
@@ -45,7 +45,7 @@ public class InitializerElasticsearchConfig {
 		Movie movie = new Movie();
 		movie.setId(602L);
 		movie.setRating(5.4d);
-		movie.setName("Hot Sauce & Bunny Machine");
+		movie.setName("Hot Bunny Machine");
 
 		List<Genre> genres = new ArrayList<Genre>();
 		genres.add(new Genre("ADULTS"));
@@ -60,7 +60,7 @@ public class InitializerElasticsearchConfig {
 		Movie movie = new Movie();
 		movie.setId(603L);
 		movie.setRating(5.4d);
-		movie.setName("Little Bunny & Baby");
+		movie.setName("Little Bunny");
 
 		List<Genre> genres = new ArrayList<Genre>();
 		genres.add(new Genre("BABIES"));
@@ -73,7 +73,7 @@ public class InitializerElasticsearchConfig {
 		Movie movie = new Movie();
 		movie.setId(604L);
 		movie.setRating(6.4d);
-		movie.setName("The Little Hobbit & his brother !");
+		movie.setName("The Little Hobbit");
 
 		List<Genre> genres = new ArrayList<Genre>();
 		genres.add(new Genre("FANTASY"));
@@ -87,7 +87,7 @@ public class InitializerElasticsearchConfig {
 		Movie movie = new Movie();
 		movie.setId(605L);
 		movie.setRating(3.4d);
-		movie.setName("The Hobbit #1");
+		movie.setName("The Hobbit");
 
 		List<Genre> genres = new ArrayList<Genre>();
 		genres.add(new Genre("FANTASY"));
@@ -100,7 +100,7 @@ public class InitializerElasticsearchConfig {
 	@DependsOn(value = { "initializeElasticSearch" })
 	public CommandLineRunner testElasticSearch() {
 		return (args) -> {
-			Page<Movie> starWarsNameQuery = movieService.getByName("Star Wars #2&3", 0, 10, new String[] {});
+			Page<Movie> starWarsNameQuery = movieService.getByName("Star Wars", 0, 10, new String[] {});
 			log.info("Content of star wars name query is {}", starWarsNameQuery);
 
 			Page<Movie> brideQuery = movieService.getByName("The Princess Bride", 0, 10, new String[] {});
@@ -118,7 +118,7 @@ public class InitializerElasticsearchConfig {
 			Movie princessPrideMovie = new Movie();
 			princessPrideMovie.setId(2L);
 			princessPrideMovie.setRating(8.4d);
-			princessPrideMovie.setName("The Princess Bride ! his toyfriend");
+			princessPrideMovie.setName("The Princess Bride");
 
 			List<Genre> princessPrideGenre = new ArrayList<Genre>();
 			princessPrideGenre.add(new Genre("ACTION"));
@@ -128,7 +128,7 @@ public class InitializerElasticsearchConfig {
 			Movie starWarsMovie = new Movie();
 			starWarsMovie.setId(1L);
 			starWarsMovie.setRating(9.6d);
-			starWarsMovie.setName("Star Wars #2&3");
+			starWarsMovie.setName("Star Wars");
 
 			List<Genre> starWarsGenre = new ArrayList<Genre>();
 			starWarsGenre.add(new Genre("ACTION"));

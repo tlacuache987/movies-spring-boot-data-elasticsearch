@@ -26,7 +26,5 @@ public interface IMovieService {
 
 	// ya
 	Page<Movie> getAll(int page, int size, String... sortAttributes);
-	
-	
 
 }
