@@ -126,7 +126,7 @@ public class MoviesRestController {
 		return Movies.builder().movies(moviePage.getContent()).build();
 	}
 	
-	@RequestMapping(value = "/searchByNameQuery2", method = RequestMethod.GET)
+	@RequestMapping(value = "/searchByNameWithSpecialCharacters", method = RequestMethod.GET)
 	public Movies getByNameQuery2(
 			@RequestParam(value = Movie.NAME_PROPERTY, required = false) List<String> names,
 			@PageableDefault(page = 0, size = 25, sort = "id", direction = Direction.ASC) Pageable pageable,

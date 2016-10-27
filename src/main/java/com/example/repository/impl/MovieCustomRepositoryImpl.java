@@ -128,7 +128,7 @@ public class MovieCustomRepositoryImpl implements IMovieCustomRepository {
 	public String preUpTextSearch(String text) {
 		final StringBuffer result = new StringBuffer();
 
-		String tmp = text;//text.replaceAll("[^a-zA-Z0-9\\s]", "");
+		String tmp = text.replace("!", "\\!");//text.replaceAll("[^a-zA-Z0-9\\s]", "");
 
 		final String words[] = tmp.split(" ");
 

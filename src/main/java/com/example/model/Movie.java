@@ -21,21 +21,15 @@ import lombok.NoArgsConstructor;
 @Document(indexName = "blockbuster", type = "movie")
 @Setting(settingPath = "/settings/settings.json")
 public class Movie {
-	
+
 	public static final String NAME_PROPERTY = "name";
-	
+
 	@Id
 	private Long id;
 
-	/*@MultiField(mainField = @Field(type = FieldType.String, index = FieldIndex.analyzed, analyzer = "my_analyzer"), otherFields = {
-			@InnerField(suffix = "untouched", type = FieldType.String, store = true, index = FieldIndex.analyzed),
-			@InnerField(suffix = "sort", type = FieldType.String, store = true, index = FieldIndex.analyzed, indexAnalyzer = "keyword") })*/
-	
-	@MultiField(mainField = @Field(type = FieldType.String, index = FieldIndex.analyzed, indexAnalyzer = "my_analyzer"), 
-			otherFields = {
-					@NestedField(dotSuffix = "untouched", type = FieldType.String, store = true, index = FieldIndex.analyzed),
-					@NestedField(dotSuffix = "sort", type = FieldType.String, store = true, index = FieldIndex.analyzed, indexAnalyzer = "keyword")
-			})
+	@MultiField(mainField = @Field(type = FieldType.String, index = FieldIndex.analyzed, indexAnalyzer = "my_analyzer"), otherFields = {
+			@NestedField(dotSuffix = "untouched", type = FieldType.String, store = true, index = FieldIndex.analyzed),
+			@NestedField(dotSuffix = "sort", type = FieldType.String, store = true, index = FieldIndex.analyzed, indexAnalyzer = "keyword") })
 	private String name;
 
 	private Double rating;

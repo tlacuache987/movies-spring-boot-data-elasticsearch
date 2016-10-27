@@ -1,38 +1,40 @@
 $(document).ready(function() {
 
-	var prefix = "/services";
-	var globers_microservice = "/globers-service";
-	var workstations_microservice = "/workstations-service";
+	$("#searchString").val("&Baby");
+	var prefix = "/api/movies";
+	var service = "/searchByNameWithSpecialCharacters";
+	
+	var getGenres = function(arr){
+		var s = "";
+		arr.forEach(function(item, index){
+			s += item.name +',';
+		})
+		return s;
+	}
 
-	$("#getGlobers").on("click", function() {
+	$("#doSearch").on("click", function() {
 		var i = 0;
+		$("#moviesDiv").empty();
 		$.ajax({
-			url : prefix + globers_microservice + '/v1/globers',
+			url : prefix + service + '?name='+ escape($("#searchString").val()),
 			method : 'GET',
-			success : function(globers) {
-				globers.forEach(function(glober, index) {
-					$.ajax({
-						url : prefix + workstations_microservice + '/v1/workstations/'+glober.workstationPosition.idWorkstation,
-						method : 'GET',
-						success : function(workstation) {
-							
-							var div = $("<div>");
-							
-							console.log(workstation)
-							
-							div.append($("<span>").html("<b>Glober id:</b>"+glober.id)).append("&nbsp;");
-							div.append($("<span>").html("<b>Name:</b> "+glober.name)).append("&nbsp;");
-							div.append($("<span>").html("<b>Workstation Position:</b> Floor "+glober.workstationPosition.floor+", Desk: "+glober.workstationPosition.deskNumber)).append("&nbsp;");
-							div.append($("<span>").html("<b>Workstation:</b> Vendor "+workstation.vendor+", Model: "+workstation.model+", Facilities Serial Number: "+workstation.facilitiesSerialNumber)).append("&nbsp;");
-							$("#globers").append(div);
-							
-							i++;
-							if(i==3)
-								$("#globers").append($("<br>"));
-						}
-					});
+			success : function(data) {
+				
+				console.log(data.movies)
+				
+				data.movies.forEach(function(m, i) {
+					var div = $("<div>");
 					
+					console.log(m)
+					div.append($("<span>").html("<b>"+(++i)+")</b>")).append("&nbsp;");
+					div.append($("<span>").html("<b>Movie id:</b>"+m.id)).append("&nbsp;");
+					div.append($("<span>").html("<b>Name:</b> "+m.name)).append("&nbsp;");
+					div.append($("<span>").html("<b>Rating:</b> "+m.name)).append("&nbsp;");
+					div.append($("<span>").html("<b>Genres:</b> "+getGenres(m.genre))).append("&nbsp;");
+					$("#moviesDiv").append(div);
 				});
+				
+				
 			}
 		});
 	});

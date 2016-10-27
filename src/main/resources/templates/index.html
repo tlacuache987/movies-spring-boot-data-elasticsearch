@@ -5,12 +5,12 @@
 	th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
-
 	<div class="container">
 		<div class="starter-template">
-			<h1>Globers</h1>
-			<input type="button" id="getGlobers" value="get Globers" />
-			<div id="globers"></div>
+			<h1>Search Movies</h1>
+			Search: <input type="text" id="searchString" value="" />
+			<input type="button" id="doSearch" value="Search" />
+			<div id="moviesDiv"></div>
 		</div>
 		<div id="error" class="text-danger"></div>
 

@@ -60,7 +60,7 @@ public class InitializerElasticsearchConfig {
 		Movie movie = new Movie();
 		movie.setId(603L);
 		movie.setRating(5.4d);
-		movie.setName("Little Bunny & Baby");
+		movie.setName("Little Bunny&Baby");
 
 		List<Genre> genres = new ArrayList<Genre>();
 		genres.add(new Genre("BABIES"));
@@ -73,7 +73,7 @@ public class InitializerElasticsearchConfig {
 		Movie movie = new Movie();
 		movie.setId(604L);
 		movie.setRating(6.4d);
-		movie.setName("The Little Hobbit & his brother !");
+		movie.setName("The Little Hobbit&his brother !");
 
 		List<Genre> genres = new ArrayList<Genre>();
 		genres.add(new Genre("FANTASY"));
